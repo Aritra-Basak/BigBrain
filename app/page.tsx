@@ -2,31 +2,30 @@
 //The above marker that tells Next.js: "Everything below this line needs to run in the browser, not just on the server."
 //Next.js 13+ uses React Server Components by default. Server Components cannot use hooks or browser-specific APIs
 
-import { SignInButton } from "@clerk/nextjs";
-import { Unauthenticated, useMutation, useQuery } from "convex/react";
-import { UserButton } from "@clerk/nextjs";
-import { Authenticated } from "convex/react";
+
+import {useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { ModeToggle } from "@/components/ui/mode-toggle";
+import DocumentCard from "./document-card";
+import CreateDocumentButton from "./create-document-button";
 
 
 export default function Home() {
-  
-  const createDocument = useMutation(api.document.createDocument);
-  const getDocument =useQuery(api.document.getDocuments);
+  const documents =useQuery(api.document.getDocuments);
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main>
-
-        <button onClick={()=>{
-          createDocument({title:"Hello World"})
-        }}>Click Me</button>
+    
+      <main className="p-24 space-y-8">
+        <div className="flex justify-between items-center">
+        <h1 className="text-4xl font-bold">My Documents</h1>
+        <CreateDocumentButton />
+        </div>
+        <div className="grid grid-cols-4 gap-8 ">
         {
-          getDocument?.map((doc)=>(
-            <div key={doc._id}>{doc.title}</div>
+          documents?.map((doc)=>(
+            <DocumentCard key={doc._id} document={doc} />
           ))
         }
+        </div>
     </main> 
-    </div>
+ 
   );
 }
