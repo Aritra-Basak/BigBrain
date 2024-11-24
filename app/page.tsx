@@ -7,6 +7,7 @@ import { Unauthenticated, useMutation, useQuery } from "convex/react";
 import { UserButton } from "@clerk/nextjs";
 import { Authenticated } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 
 
 export default function Home() {
@@ -16,11 +17,7 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main>
-      <Unauthenticated>
-        <SignInButton />
-      </Unauthenticated>
-      <Authenticated>
-        <UserButton />
+
         <button onClick={()=>{
           createDocument({title:"Hello World"})
         }}>Click Me</button>
@@ -29,7 +26,6 @@ export default function Home() {
             <div key={doc._id}>{doc.title}</div>
           ))
         }
-      </Authenticated>
     </main> 
     </div>
   );
