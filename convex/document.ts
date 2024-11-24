@@ -6,7 +6,8 @@ import { ConvexError, v } from "convex/values";
 //At backend it will be used to perform data base operation at convex data-base.
 export const createDocument = mutation({
     args:{
-        title:v.string()
+        title:v.string(),
+        fileId:v.string()
     },
     async handler(ctx, args) {
         const userId =(await ctx.auth.getUserIdentity())?.tokenIdentifier;
@@ -15,7 +16,8 @@ export const createDocument = mutation({
         }
         await ctx.db.insert('documents',{
             title:args.title,
-            tokenIdentifier:userId
+            tokenIdentifier:userId,
+            fileId:args.fileId,
         })
     },
 })
@@ -31,3 +33,8 @@ export const getDocuments = query({
         
     }
 })
+//This function is used to generate a secure, pre-signed(meaning it's secure and time-limited) URL for file uploads in a Convex backend. 
+//The mutation indicates it's a Convex mutation, meaning it can modify the backend state.
+export const generateUploadUrl = mutation(async (ctx) => {
+    return await ctx.storage.generateUploadUrl();
+  });

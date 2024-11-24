@@ -6,6 +6,7 @@ export default defineSchema({
 
   documents: defineTable({ 
     title: v.string(),
-    tokenIdentifier: v.string()})
+    tokenIdentifier: v.string(),
+    fileId: v.string()})
     .index('by_tokenIdentifier',['tokenIdentifier'])
 });

@@ -13,13 +13,13 @@ import {
   } from "@/components/ui/dialog"
 import UploadDocumentForm from "./upload-document-form";
 import { useState } from "react";
+import { Upload } from "lucide-react";
+import { btnIconStyles, btnStyles } from "@/styles/styles";
   
 
 
-export default function CreateDocumentButton() {
+export default function UploadDocumentButton() {
     const [isOpen,setIsOpen]=useState(false);
-  
-  const createDocument = useMutation(api.document.createDocument);
   return (
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
     <DialogTrigger asChild>
@@ -29,16 +29,15 @@ export default function CreateDocumentButton() {
             Instead, it clones the child element and passes the necessary props to it
             This allows you to use your own custom trigger element 
 */}
-    <Button onClick={()=>{
-          createDocument({title:"Hello World"})
-        }}> Upload Document
-        </Button> 
+     <Button className={btnStyles}>
+          <Upload className={btnIconStyles} /> Upload Document
+        </Button>
     </DialogTrigger>
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>Upload a Document ?</DialogTitle>
+        <DialogTitle>Upload a Document.</DialogTitle>
         <DialogDescription>
-          Upload a team document for you to search over in the futures.
+          "Upload a team document for you to search over in the futures."
         </DialogDescription>
         <UploadDocumentForm onUpload={()=> setIsOpen(false)}/>
       </DialogHeader>

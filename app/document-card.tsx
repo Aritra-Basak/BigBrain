@@ -8,6 +8,8 @@ import {
   } from "@/components/ui/card"
 import { Doc } from '@/convex/_generated/dataModel'
 import { Button } from '@/components/ui/button'
+import { Eye, View } from 'lucide-react'
+import { btnIconStyles, btnStyles } from "@/styles/styles";
 
 export default function DocumentCard({document}:{document:Doc<'documents'>}) {
   return (
@@ -22,7 +24,9 @@ export default function DocumentCard({document}:{document:Doc<'documents'>}) {
     <p>Card Content</p>
   </CardContent>
   <CardFooter>
-    <Button variant={'secondary'}>View</Button>
+    <Button variant={'secondary'} className={btnStyles}>
+        <Eye className={btnIconStyles} /> View
+        </Button>
   </CardFooter>
 </Card>
 

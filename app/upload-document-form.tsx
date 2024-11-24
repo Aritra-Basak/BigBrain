@@ -4,11 +4,9 @@ import React from 'react'
 import { useForm } from 'react-hook-form';
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -17,17 +15,19 @@ import {
 import { Input } from '@/components/ui/input';
 import {useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { Loader2 } from 'lucide-react';
-import { resolve } from 'path';
 import LoadingButton from './loading-button';
+import { useOrganization } from "@clerk/nextjs";
 
 const formSchema = z.object({
     title: z.string().min(2).max(250),
+    file:z.instanceof(File),
   })
+  /**This uses Zod (a TypeScript-first schema validation library) to define the form's data structure */
  
 export default function UploadDocumentForm({onUpload}:{onUpload:()=>void}) {
 
     const createDocument = useMutation(api.document.createDocument);
+    const generateUploadUrl = useMutation(api.document.generateUploadUrl);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -37,9 +37,22 @@ export default function UploadDocumentForm({onUpload}:{onUpload:()=>void}) {
       });  
 
     async function onSubmit(values:z.infer<typeof formSchema>){
-        await new Promise((resolve)=>setTimeout(resolve,2000));
-         await createDocument(values);
-         onUpload();
+        //To Post the uploaded file to the convex backend via a secure link.
+        const postUrl = await generateUploadUrl();
+        console.log(postUrl)
+        // Step 2: POST the file to the URL
+        const result = await fetch(postUrl, {
+        method: "POST",
+        headers: { "Content-Type": values.file.type },
+        body: values.file,
+        });
+        const { storageId } = await result.json();
+        await createDocument({
+            title:values.title,
+            fileId : storageId as string,
+        })
+        
+        onUpload();
       }
   return (
     <React.Fragment>
@@ -50,9 +63,30 @@ export default function UploadDocumentForm({onUpload}:{onUpload:()=>void}) {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title</FormLabel>
+              <FormLabel>File</FormLabel>
               <FormControl>
                 <Input placeholder="Expense Report" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="file"
+          render={({ field:{value,onChange,...fieldProps} }) => (
+            <FormItem>
+              <FormLabel>File</FormLabel>
+              <FormControl>
+                <Input 
+                {...fieldProps}
+                type='file'
+                accept='.txt,.xml,.doc'
+                onChange={(event)=>{
+                    const file =event.target.files?.[0];
+                    onChange(file)
+                }} />
               </FormControl>
               <FormMessage />
             </FormItem>
