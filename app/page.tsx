@@ -18,7 +18,7 @@ export default function Home() {
         <h1 className="text-4xl font-bold">My Documents</h1>
         <UploadDocumentButton />
         </div>
-        <div className="grid grid-cols-4 gap-8 ">
+        <div className="grid grid-cols-4 gap-8">
         {
           documents?.map((doc)=>(
             <DocumentCard key={doc._id} document={doc} />

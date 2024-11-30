@@ -1,6 +1,45 @@
 
-import { mutation, query } from "./_generated/server";
+import { action, internalQuery, mutation, MutationCtx, query, QueryCtx } from "./_generated/server";
 import { ConvexError, v } from "convex/values";
+import {api, internal} from "./_generated/api"
+import Groq from 'groq-sdk';
+import { Id } from "./_generated/dataModel";
+
+// Groq API KEY
+const client = new Groq({
+    apiKey: process.env.GROQ_API_KEY
+  });
+
+  // A utility function to check whete the logged in user has access to the document or not.
+export async function hasAccessToDocument( 
+    ctx:MutationCtx | QueryCtx,
+    documentId: Id<"documents">
+){
+    const userId = (await ctx.auth.getUserIdentity())?.tokenIdentifier;
+    if(!userId){
+        return null;
+    }
+
+    const document = await ctx.db.get(documentId);
+    if(!document){
+        return null;
+    }
+    if(document.tokenIdentifier !==userId){
+        return null;
+    }
+    return {document,userId};
+}
+  
+// Function to be called from the action type function as they don't have the access of db directly
+export const hasAccessToDocumentQuery =internalQuery({
+    args:{
+        documentId:v.id("documents"),
+    },
+    async handler(ctx,args){
+        return await hasAccessToDocument(ctx, args.documentId);
+    }
+})
+
 
 //This is a mutation function which will be called from the frontend to send data at backend(convex)
 //At backend it will be used to perform data base operation at convex data-base.
@@ -42,22 +81,75 @@ export const getDocument = query({
         documentId:v.id('documents')
     },
     async handler(ctx,args) {
-        const userId =(await ctx.auth.getUserIdentity())?.tokenIdentifier;
-        if(!userId){
-            return null;
-        }
-        const document =await ctx.db.get(args.documentId);
-        if(!document){return null;}
-        if (document.tokenIdentifier!==userId){return null;}
-        return {...document,documentUrl:await ctx.storage.getUrl(document.fileId)};
+        const accessObj = await hasAccessToDocument(ctx,args.documentId);
+        if(!accessObj){return null;}
+        return {...accessObj.document,documentUrl:await ctx.storage.getUrl(accessObj.document.fileId)};
         
     }
 })
-//This function is used to generate a secure, pre-signed(meaning it's secure and time-limited) URL for file uploads in a Convex backend. 
+
+//Function to generate a secure, pre-signed(meaning it's secure and time-limited) URL for file uploads in a Convex backend. 
 //The mutation indicates it's a Convex mutation, meaning it can modify the backend state.
 export const generateUploadUrl = mutation(async (ctx) => {
     return await ctx.storage.generateUploadUrl();
   });
+
+//Function to pass the document and prompt to Groq
+export const askQuestion =action({
+    args:{
+        question:v.string(),
+        documentId:v.id('documents')
+    },
+    async handler(ctx, args) {
+        const accessObj =await ctx.runQuery(internal.document.hasAccessToDocumentQuery, {
+            documentId:args.documentId
+        })
+        if(!accessObj){
+            throw new ConvexError("Oops! You don't have the access to this document.");
+        }
+        const file =await ctx.storage.get(accessObj.document.fileId);
+        if(!file){
+            throw new ConvexError("File not found.");
+        }
+        const text = await file.text();
+       // console.log(text);
+        const chatCompletion: Groq.Chat.ChatCompletion = await client.chat.completions.create({
+            messages: [
+                { 
+                 role: 'system',
+                 content: `Here is a text file: ${text}` 
+                },
+                {
+                    role: 'user',
+                    content: `Please answer this question ${args.question} related to the text file.`
+                }
+            ],
+            model: 'llama3-8b-8192',
+          });
+          // To store the user prompts as a record
+            await ctx.runMutation(internal.chat.createChatRecord, {
+                documentId:args.documentId,
+                text: args.question,
+                isHuman :true,
+                tokenIdentifier: accessObj.userId
+            });
+          // To store the AI responses as a record
+          const response =
+          chatCompletion.choices[0].message.content ??
+          "could not generate a response";
+    
+            await ctx.runMutation(internal.chat.createChatRecord, {
+            documentId: args.documentId,
+            text: response,
+            isHuman: false,
+            tokenIdentifier: accessObj.userId,
+            });
+ 
+          console.log(chatCompletion.choices[0].message.content);
+          return chatCompletion.choices[0].message.content;
+    },
+})
+
 
 //   export const deleteDocument = mutation({
 //     args: {

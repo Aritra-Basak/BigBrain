@@ -1,35 +1,74 @@
 "use client";
 
-//The file structure documents\[documentId] signify the parameter passed as documentId
-import {useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
+import { useQuery } from "convex/react";
+import ChatPanel from "./chat-panel";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
+// import { DeleteDocumentButton } from "./delete-document-button";
 
 
-export default function DocumentPage({params}:{
-    params:{documentId:Id<"documents">;}
+//Here we have kept the file in a folder\[parameter_value]-> which will load the below component when triggered.
+export default function DocumentPage({
+  params,
+}: {
+  params: {
+    documentId: Id<"documents">;
+  };
 }) {
-  const document =useQuery(api.document.getDocument,{
-    documentId:params.documentId,
+  const document = useQuery(api.document.getDocument, {
+    documentId: params.documentId,
   });
 
-  if(!document){
-    return <div>"You don't have access to view this document."</div>
-  }
   return (
-      <main className="p-24 space-y-8">
-        <div className="flex justify-between items-center">
-            <h1 className="text-4xl font-bold">{document.title}</h1>
-            <div className="flex gap-12">
-              <div className="bg-gray-900 p-4 rounded flex-1 h-[600px]">
-                {document.documentUrl && (
-                  <iframe className="w-full" src={document.documentUrl}/>
-                )}
-              </div>
-              <div className="w-[300px] bg-gray-900"></div>
-            </div>
+    <main className="space-y-8 w-full">
+      {!document && (
+        <div className="space-y-8">
+          <div>
+            <Skeleton className="h-[40px] w-[500px]" />
+          </div>
+          <div className="flex gap-2">
+            <Skeleton className="h-[40px] w-[80px]" />
+            <Skeleton className="h-[40px] w-[80px]" />
+          </div>
+          <Skeleton className="h-[500px]" />
         </div>
-    </main> 
- 
+      )}
+
+      {document && (
+        <>
+          <div className="flex justify-between items-center">
+            <h1 className="text-4xl font-bold">{document.title}</h1>
+
+            {/* <DeleteDocumentButton documentId={document._id} /> */}
+          </div>
+
+          <div className="flex gap-12">
+            <Tabs defaultValue="document" className="w-full">
+              <TabsList className="mb-2">
+                <TabsTrigger value="document">📃 Document</TabsTrigger>
+                <TabsTrigger value="chat">💬 Chat</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="document">
+                <div className="bg-gray-900 p-4 rounded-xl flex-1 h-[500px]">
+                  {document.documentUrl && (
+                    <iframe
+                      sandbox="allow-scripts allow-same-origin allow-popups"
+                      className="w-full h-full"
+                      src={document.documentUrl}
+                    />
+                  )}
+                </div>
+              </TabsContent>
+              <TabsContent value="chat">
+                <ChatPanel documentId={document._id} />
+              </TabsContent>
+            </Tabs>
+          </div>
+        </>
+      )}
+    </main>
   );
 }

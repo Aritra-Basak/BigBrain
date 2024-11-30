@@ -9,5 +9,14 @@ export default defineSchema({
     description: v.optional(v.string()),
     tokenIdentifier: v.string(),
     fileId: v.id("_storage")})
-    .index('by_tokenIdentifier',['tokenIdentifier'])
+    .index('by_tokenIdentifier',['tokenIdentifier']),
+    //The above table will indexed by the token-identifier from the logged in user.
+
+  chats: defineTable({
+      documentId: v.id("documents"),
+      tokenIdentifier: v.string(),
+      isHuman: v.boolean(),
+      text: v.string(),
+    }).index("by_documentId_tokenIdentifier", ["documentId", "tokenIdentifier"]),
+    //The above table will indexed by the token-identifier from the logged in user and also the document IDs.
 });
