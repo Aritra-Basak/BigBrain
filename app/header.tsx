@@ -19,7 +19,7 @@ export default function header() {
               className="rounded"
               alt="an image of a brain"
             />
-            (2nd) Brain 🧠
+            <p>2<sup>nd</sup>  Brain 🧠</p>
             </Link>
         </div>
         <div className="flex gap-4 items-center">

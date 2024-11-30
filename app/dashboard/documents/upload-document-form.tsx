@@ -15,7 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import {useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import LoadingButton from './loading-button';
+import LoadingButton from '../../loading-button';
 import { useOrganization } from "@clerk/nextjs";
 import { Id } from '@/convex/_generated/dataModel';
 
@@ -26,7 +26,8 @@ const formSchema = z.object({
   /**This uses Zod (a TypeScript-first schema validation library) to define the form's data structure */
  
 export default function UploadDocumentForm({onUpload}:{onUpload:()=>void}) {
-
+    // The API from Conver provides type-safe access to all your Convex backend functions (mutations and queries)
+    //useMutation is a React hook that connects to a Convex mutation function
     const createDocument = useMutation(api.document.createDocument);
     const generateUploadUrl = useMutation(api.document.generateUploadUrl);
 

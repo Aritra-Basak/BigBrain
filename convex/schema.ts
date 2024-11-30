@@ -8,7 +8,7 @@ export default defineSchema({
     title: v.string(),
     description: v.optional(v.string()),
     tokenIdentifier: v.string(),
-    fileId: v.id("_storage")})
+    fileId: v.id("_storage")}) //"_storage" defines the ID of Storage.
     .index('by_tokenIdentifier',['tokenIdentifier']),
     //The above table will indexed by the token-identifier from the logged in user.
 

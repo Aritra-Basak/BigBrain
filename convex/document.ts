@@ -1,5 +1,6 @@
-
-import { action, internalQuery, mutation, MutationCtx, query, QueryCtx } from "./_generated/server";
+//This is a Convex Backend file.
+//Here we define our server-side functions and database operations. 
+import { action, internalAction, internalMutation, internalQuery, mutation, MutationCtx, query, QueryCtx } from "./_generated/server";
 import { ConvexError, v } from "convex/values";
 import {api, internal} from "./_generated/api"
 import Groq from 'groq-sdk';
@@ -42,7 +43,7 @@ export const hasAccessToDocumentQuery =internalQuery({
 
 
 //This is a mutation function which will be called from the frontend to send data at backend(convex)
-//At backend it will be used to perform data base operation at convex data-base.
+//At backend it will be used to perform write operation at convex data-base.
 export const createDocument = mutation({
     args:{
         title:v.string(),
@@ -53,10 +54,17 @@ export const createDocument = mutation({
         if(!userId){
             throw new ConvexError('Not Authenticated.');
         }
-        await ctx.db.insert('documents',{
+        const docId=await ctx.db.insert('documents',{
             title:args.title,
             tokenIdentifier:userId,
             fileId:args.fileId,
+            description: ""
+        });
+
+        //an inqueue event that going to trigger as soon as createDocument function is triggered.
+        await ctx.scheduler.runAfter(0,internal.document.generateDocumentDescription,{
+            fileId:args.fileId,
+            documentId:docId
         })
     },
 })
@@ -94,6 +102,7 @@ export const generateUploadUrl = mutation(async (ctx) => {
     return await ctx.storage.generateUploadUrl();
   });
 
+//Functions that can call external APIs
 //Function to pass the document and prompt to Groq
 export const askQuestion =action({
     args:{
@@ -136,7 +145,7 @@ export const askQuestion =action({
           // To store the AI responses as a record
           const response =
           chatCompletion.choices[0].message.content ??
-          "could not generate a response";
+          "Could not generate a response";
     
             await ctx.runMutation(internal.chat.createChatRecord, {
             documentId: args.documentId,
@@ -144,25 +153,74 @@ export const askQuestion =action({
             isHuman: false,
             tokenIdentifier: accessObj.userId,
             });
- 
-          console.log(chatCompletion.choices[0].message.content);
-          return chatCompletion.choices[0].message.content;
+          return response;
     },
 })
 
+//Function to get a description for the uploaded documents
+export const generateDocumentDescription =internalAction({
+    args:{
+        fileId:v.id("_storage"),
+        documentId:v.id('documents')
+    },
+    async handler(ctx, args) {
+        const file = await ctx.storage.get(args.fileId);
+        if(!file){
+            throw new ConvexError("File not found.");
+        }
+        const text = await file.text();
+       // console.log(text);
+        const chatCompletion: Groq.Chat.ChatCompletion = await client.chat.completions.create({
+            messages: [
+                { 
+                 role: 'system',
+                 content: `Here is a text file: ${text}` 
+                },
+                {
+                    role: 'user',
+                    content: `Please generate one sentence description for this document.`
+                }
+            ],
+            model: 'llama3-8b-8192',
+          });
+          
+          const response =
+          chatCompletion.choices[0].message.content ??
+          "Could not figure out the description for this document.";
+    
+            await ctx.runMutation(internal.document.updateDocumentDescription, {
+            documentId: args.documentId,
+            description:response
+            });
+    },
+})
 
-//   export const deleteDocument = mutation({
-//     args: {
-//       documentId: v.id("documents"),
-//     },
-//     async handler(ctx, args) {
-//       const accessObj = await hasAccessToDocument(ctx, args.documentId);
-  
-//       if (!accessObj) {
-//         throw new ConvexError("You do not have access to this document");
-//       }
-  
-//       await ctx.storage.delete(accessObj.document.fileId);
-//       await ctx.db.delete(args.documentId);
-//     },
-//   });
+//Function to generate a document description via AI
+export const updateDocumentDescription = internalMutation({
+    args:{
+        documentId: v.id("documents"),
+        description: v.string(),
+    },
+    async handler(ctx, args){
+        await ctx.db.patch(args.documentId,{
+            description:args.description,
+        });
+    },
+});
+
+//Function to delete a particular document
+export const deleteDocument = mutation({
+args: {
+    documentId: v.id("documents"),
+},
+async handler(ctx, args) {
+    const accessObj = await hasAccessToDocument(ctx, args.documentId);
+
+    if (!accessObj) {
+    throw new ConvexError("You do not have access to this document");
+    }
+
+    await ctx.storage.delete(accessObj.document.fileId);
+    await ctx.db.delete(args.documentId);
+},
+});

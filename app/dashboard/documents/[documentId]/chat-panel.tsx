@@ -1,5 +1,5 @@
 "use client";
-
+//Here we have kept the file in a folder\[parameter_value]-> which will load the page.tsx component when triggered.
 import { api } from "@/convex/_generated/api";
 import { Id } from "@/convex/_generated/dataModel";
 import { cn } from "@/lib/utils";
@@ -20,6 +20,7 @@ export default function ChatPanel({
           🤖: Ask any question using AI about this document below:
         </div>
         {chats?.map((chat) => (
+            //The cn() provides a conditional css
           <div
             className={cn(
               {

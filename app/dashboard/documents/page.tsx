@@ -1,12 +1,10 @@
-"use client";
-//The above marker that tells Next.js: "Everything below this line needs to run in the browser, not just on the server."
-//Next.js 13+ uses React Server Components by default. Server Components cannot use hooks or browser-specific APIs
+"use Client";
 
 
 import {useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import DocumentCard from "./dashboard/documents/document-card";
-import UploadDocumentButton from "./dashboard/documents/upload-document-button";
+import DocumentCard from "./document-card";
+import UploadDocumentButton from "./upload-document-button";
 import { Skeleton } from "@/components/ui/skeleton"
 import { Card } from "@/components/ui/card";
 import Image from "next/image";

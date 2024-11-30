@@ -21,18 +21,18 @@ export default function DocumentCard({ document }: { document: Doc<"documents"> 
       </CardHeader>
       <CardContent>
         <div>
-          {/* {!document.description ? (
+          {!document.description ? (
             <div className="flex justify-center">
               <Loader2 className="animate-spin" />
             </div>
           ) : (
             document.description
-          )} */}
+          )}
         </div>
       </CardContent>
       <CardFooter>
         <Button asChild variant="secondary" className="flex items-center gap-2">
-          <Link href={`/documents/${document._id}`}>
+          <Link href={`/dashboard/documents/${document._id}`}>
             <Eye className="w-4 h-4" /> View
           </Link>
         </Button>
