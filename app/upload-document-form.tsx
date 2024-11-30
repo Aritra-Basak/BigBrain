@@ -17,6 +17,7 @@ import {useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import LoadingButton from './loading-button';
 import { useOrganization } from "@clerk/nextjs";
+import { Id } from '@/convex/_generated/dataModel';
 
 const formSchema = z.object({
     title: z.string().min(2).max(250),
@@ -39,7 +40,7 @@ export default function UploadDocumentForm({onUpload}:{onUpload:()=>void}) {
     async function onSubmit(values:z.infer<typeof formSchema>){
         //To Post the uploaded file to the convex backend via a secure link.
         const postUrl = await generateUploadUrl();
-        console.log(postUrl)
+        //console.log(postUrl)
         // Step 2: POST the file to the URL
         const result = await fetch(postUrl, {
         method: "POST",
@@ -49,15 +50,17 @@ export default function UploadDocumentForm({onUpload}:{onUpload:()=>void}) {
         const { storageId } = await result.json();
         await createDocument({
             title:values.title,
-            fileId : storageId as string,
+            fileId : storageId as Id<"_storage">,
         })
         
         onUpload();
       }
   return (
     <React.Fragment>
-         <Form {...form}>
+      <Form {...form}>
+          
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        
         <FormField
           control={form.control}
           name="title"
