@@ -19,7 +19,7 @@ export default function ChatPanel({
         <div className="dark:bg-slate-950 rounded p-3">
           🤖: Ask any question using AI about this document below:
         </div>
-        {chats?.map((chat) => (
+        {chats?.map((chat,i) => (
             //The cn() provides a conditional css
           <div
             className={cn(
@@ -30,7 +30,7 @@ export default function ChatPanel({
               },
               "rounded p-4 whitespace-pre-line"
             )}
-          >
+          key={i}>
             {chat.isHuman ? "🧑🏽‍💻" : "🤖"}: {chat.text}
           </div>
         ))}

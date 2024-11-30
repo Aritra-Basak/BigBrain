@@ -15,7 +15,7 @@ import Image from "next/image";
 export default function Home() {
   const documents =useQuery(api.document.getDocuments);
   return (
-    <main className="w-full space-y-8">
+    <main className="w-full space-y-8 p-6">
       <div className="flex justify-between items-center">
         <h1 className="text-4xl font-bold">My Documents</h1>
         <UploadDocumentButton />
