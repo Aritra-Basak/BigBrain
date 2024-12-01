@@ -19,4 +19,11 @@ export default defineSchema({
       text: v.string(),
     }).index("by_documentId_tokenIdentifier", ["documentId", "tokenIdentifier"]),
     //The above table will indexed by the token-identifier from the logged in user and also the document IDs.
+
+    notes: defineTable({ 
+      text: v.string(),
+      tokenIdentifier: v.string()})
+      .index('by_tokenIdentifier',['tokenIdentifier']),
+
+
 });

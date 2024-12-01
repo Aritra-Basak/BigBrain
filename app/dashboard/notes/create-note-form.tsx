@@ -16,45 +16,31 @@ import { Input } from '@/components/ui/input';
 import {useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import LoadingButton from '../../loading-button';
-import { useOrganization } from "@clerk/nextjs";
-import { Id } from '@/convex/_generated/dataModel';
+import { Textarea } from "@/components/ui/textarea"
+
 
 const formSchema = z.object({
-    title: z.string().min(2).max(250),
-    file:z.instanceof(File),
+    text: z.string().min(1).max(2500),
   })
   /**This uses Zod (a TypeScript-first schema validation library) to define the form's data structure */
  
-export default function CreateNoteForm({onUpload}:{onUpload:()=>void}) {
+export default function CreateNoteForm({onNoteCreated}:{onNoteCreated:()=>void}) {
     // The API from Conver provides type-safe access to all your Convex backend functions (mutations and queries)
     //useMutation is a React hook that connects to a Convex mutation function
-    const createDocument = useMutation(api.document.createDocument);
-    const generateUploadUrl = useMutation(api.document.generateUploadUrl);
+    const createNote = useMutation(api.notes.createNote);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-          title: "",
+          text: "",
         },
       });  
 
     async function onSubmit(values:z.infer<typeof formSchema>){
-        //To Post the uploaded file to the convex backend via a secure link.
-        const postUrl = await generateUploadUrl();
-        //console.log(postUrl)
-        // Step 2: POST the file to the URL
-        const result = await fetch(postUrl, {
-        method: "POST",
-        headers: { "Content-Type": values.file.type },
-        body: values.file,
-        });
-        const { storageId } = await result.json();
-        await createDocument({
-            title:values.title,
-            fileId : storageId as Id<"_storage">,
+        await createNote({
+            text:values.text,
         })
-        
-        onUpload();
+        onNoteCreated();
       }
   return (
     <React.Fragment>
@@ -64,43 +50,23 @@ export default function CreateNoteForm({onUpload}:{onUpload:()=>void}) {
         
         <FormField
           control={form.control}
-          name="title"
+          name="text"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>File</FormLabel>
+              <FormLabel>Note</FormLabel>
               <FormControl>
-                <Input placeholder="Expense Report" {...field} />
+                <Textarea rows={8} placeholder="Your Note" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="file"
-          render={({ field:{value,onChange,...fieldProps} }) => (
-            <FormItem>
-              <FormLabel>File</FormLabel>
-              <FormControl>
-                <Input 
-                {...fieldProps}
-                type='file'
-                accept='.txt,.xml,.doc'
-                onChange={(event)=>{
-                    const file =event.target.files?.[0];
-                    onChange(file)
-                }} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
         <LoadingButton 
             isLoading={form.formState.isSubmitting}
-            loadingText="Uploading..."
+            loadingText="Creating..."
             >
-                Upload
+                Create
             </LoadingButton>
       </form>
     </Form>

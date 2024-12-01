@@ -19,6 +19,7 @@ import LoadingButton from '../../loading-button';
 import { useOrganization } from "@clerk/nextjs";
 import { Id } from '@/convex/_generated/dataModel';
 
+
 const formSchema = z.object({
     title: z.string().min(2).max(250),
     file:z.instanceof(File),
@@ -53,7 +54,6 @@ export default function UploadDocumentForm({onUpload}:{onUpload:()=>void}) {
             title:values.title,
             fileId : storageId as Id<"_storage">,
         })
-        
         onUpload();
       }
   return (
@@ -67,9 +67,9 @@ export default function UploadDocumentForm({onUpload}:{onUpload:()=>void}) {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>File</FormLabel>
+              <FormLabel>File Header</FormLabel>
               <FormControl>
-                <Input placeholder="Expense Report" {...field} />
+                <Input placeholder="Document Name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

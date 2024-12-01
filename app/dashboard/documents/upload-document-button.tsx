@@ -14,11 +14,12 @@ import UploadDocumentForm from "./upload-document-form";
 import { useState } from "react";
 import { Upload } from "lucide-react";
 import { btnIconStyles, btnStyles } from "@/styles/styles";
-  
+import { useToast } from "@/hooks/use-toast"
 
 
 export default function UploadDocumentButton() {
     const [isOpen,setIsOpen]=useState(false);
+    const { toast } = useToast();
   return (
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
     <DialogTrigger asChild>
@@ -38,7 +39,12 @@ export default function UploadDocumentButton() {
         <DialogDescription>
           "Upload a team document for you to search over in the futures."
         </DialogDescription>
-        <UploadDocumentForm onUpload={()=> setIsOpen(false)}/>
+        <UploadDocumentForm onUpload={()=> {setIsOpen(false);
+           toast({
+            title: "File Uploaded.",
+            description: "Your file has been uplaoded successfully.",
+          })
+        }}/>
       </DialogHeader>
     </DialogContent>
   </Dialog>
