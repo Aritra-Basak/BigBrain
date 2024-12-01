@@ -8,7 +8,7 @@ export default function SearchPage() {
   return (
     <main className='w-full space-y-8  p-6'>
          <div className="flex justify-between items-center">
-        <div className="flex items-center">
+        <div className="flex items-center space-x-4">
             <Image
                         src="/search.svg"
                         width="70"

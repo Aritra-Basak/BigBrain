@@ -17,14 +17,17 @@ export default function DocumentCard({ document }: { document: Doc<"documents"> 
   return (
     <Card>
       <CardHeader>
-        <CardTitle className='flex items-center'>
-        <Image
-              src="/cardLogo.svg"
-              width="40"
-              height="40"
-              alt="Card Icon"
-                />
-          {document.title}</CardTitle>
+        <CardTitle>
+          <div  className='flex items-center'>
+            <Image
+                src="/cardLogo.svg"
+                width="40"
+                height="40"
+                alt="Card Icon"
+                  />
+            {document.title}
+          </div>
+        </CardTitle>
         <CardDescription></CardDescription>
       </CardHeader>
       <CardContent>

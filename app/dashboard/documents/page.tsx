@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <main className="w-full space-y-8 p-6">
       <div className="flex justify-between items-center">
-        <div className="flex items-center">
+        <div className="flex items-center space-x-4">
             <Image
                         src="/document2.svg"
                         width="70"
