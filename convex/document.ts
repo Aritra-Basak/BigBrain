@@ -6,6 +6,9 @@ import {api, internal} from "./_generated/api"
 import Groq from 'groq-sdk';
 import { Id } from "./_generated/dataModel";
 
+// ctx (short for "context") is an object that provides various utilities and information related to the current execution environment of a function. 
+// It is commonly used in server-side functions, such as actions, queries, and mutations, to access important features and services. 
+
 // Groq API KEY
 const client = new Groq({
     apiKey: process.env.GROQ_API_KEY

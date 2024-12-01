@@ -42,3 +42,10 @@ export default function RootLayout({
     </html>
   );
 }
+
+
+// The layout.tsx file is used to define a common layout for a group of pages. 
+// It allows you to share UI elements (like headers, footers, or sidebars) across multiple pages without repeating code.
+
+// The Layout.tsx wraps around the content of the pages.tsx.
+// The children prop represents the content of the specific page that is being rendered within this layout.
