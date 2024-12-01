@@ -18,10 +18,11 @@ export default function DocumentPage({
   const document = useQuery(api.document.getDocument, {
     documentId: params.documentId,
   });
+  const isLoading = !document;
 
   return (
     <main className="space-y-8 w-full">
-      {!document && (
+      {isLoading && (
         <div className="space-y-8">
           <div>
             <Skeleton className="h-[40px] w-[500px]" />
@@ -34,7 +35,7 @@ export default function DocumentPage({
         </div>
       )}
 
-      {document && (
+      {!isLoading && (
         <>
           <div className="flex justify-between items-center">
             <h1 className="text-4xl font-bold">{document.title}</h1>

@@ -5,6 +5,7 @@ import { ModeToggle } from '@/components/ui/mode-toggle'
 import Image from "next/image";
 import HeaderActions from './header-actions';
 import Link from 'next/link';
+import { Authenticated } from 'convex/react';
 
 export default function header() {
   return (
@@ -21,6 +22,16 @@ export default function header() {
             />
             <p>2<sup>nd</sup>  Brain 🧠</p>
             </Link>
+
+            <nav className="flex items-center gap-8">
+          
+
+            <Authenticated>
+              <Link href="/dashboard" className="hover:text-slate-300">
+                Dashboard
+              </Link>
+            </Authenticated>
+          </nav>
         </div>
         <div className="flex gap-4 items-center">
         <ModeToggle />

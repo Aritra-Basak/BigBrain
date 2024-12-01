@@ -11,7 +11,7 @@ export const getChatsForDocument = query({
     if (!userId) {
       return [];
     }
-
+    // Queries the table by filtering with two parameters - documentId and the user specific tokenIdentifier..
     return await ctx.db
       .query("chats")
       .withIndex("by_documentId_tokenIdentifier", (q) =>

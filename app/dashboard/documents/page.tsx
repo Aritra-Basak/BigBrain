@@ -1,4 +1,6 @@
-"use Client";
+"use client";
+//The above marker that tells Next.js: "Everything below this line needs to run in the browser, not just on the server."
+//Next.js 13+ uses React Server Components by default. Server Components cannot use hooks or browser-specific APIs
 
 
 import {useMutation, useQuery } from "convex/react";
@@ -48,7 +50,7 @@ export default function Home() {
 
       {documents && documents.length > 0 && (
         <div className="grid grid-cols-3 gap-8">
-          {documents?.map((doc) => <DocumentCard document={doc} />)}
+          {documents?.map((doc) => <DocumentCard document={doc} key={doc._id}/>)}
         </div>
       )}
     </main>
