@@ -17,7 +17,15 @@ export default function Home() {
   return (
     <main className="w-full space-y-8 p-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-4xl font-bold">My Documents</h1>
+        <div className="flex items-center">
+            <Image
+                        src="/document2.svg"
+                        width="70"
+                        height="70"
+                        alt="Doc Icon"
+                />
+            <h1 className="text-4xl font-bold">My Documents</h1>
+        </div>    
         <UploadDocumentButton />
       </div>
 

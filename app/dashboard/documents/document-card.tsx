@@ -11,12 +11,20 @@ import { Doc } from '@/convex/_generated/dataModel'
 import { Button } from '@/components/ui/button'
 import { Eye, Loader2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function DocumentCard({ document }: { document: Doc<"documents"> }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{document.title}</CardTitle>
+        <CardTitle className='flex items-center'>
+        <Image
+              src="/cardLogo.svg"
+              width="40"
+              height="40"
+              alt="Card Icon"
+                />
+          {document.title}</CardTitle>
         <CardDescription></CardDescription>
       </CardHeader>
       <CardContent>
