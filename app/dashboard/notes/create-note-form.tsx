@@ -20,7 +20,7 @@ import { Textarea } from "@/components/ui/textarea"
 
 
 const formSchema = z.object({
-    text: z.string().min(1).max(2500),
+    text: z.string().min(1).max(5000),
   })
   /**This uses Zod (a TypeScript-first schema validation library) to define the form's data structure */
  

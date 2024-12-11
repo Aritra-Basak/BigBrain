@@ -13,7 +13,7 @@ export default function header() {
        <div className="container mx-auto flex justify-between items-center">
        <div className="flex gap-8 items-center">
        <Link href="/" className="flex items-center gap-4 text-2xl">
-       <p>2<sup>nd</sup></p>
+       <p>Big Brain</p>
        <Image
               src="/brainDesign.svg"
               width={40}

@@ -5,6 +5,7 @@ import { ConvexError, v } from "convex/values";
 import {api, internal} from "./_generated/api"
 import Groq from 'groq-sdk';
 import { Id } from "./_generated/dataModel";
+import { embed } from "./notes";
 
 // ctx (short for "context") is an object that provides various utilities and information related to the current execution environment of a function. 
 // It is commonly used in server-side functions, such as actions, queries, and mutations, to access important features and services. 
@@ -190,10 +191,16 @@ export const generateDocumentDescription =internalAction({
           const response =
           chatCompletion.choices[0].message.content ??
           "Could not figure out the description for this document.";
-    
+          var embedding=null;
+          try {
+            embedding = await embed(response);
+          } catch (error) {
+             embedding = null; // Store null if an error occurs
+          }
             await ctx.runMutation(internal.document.updateDocumentDescription, {
             documentId: args.documentId,
-            description:response
+            description: response,
+            embedding: embedding || []
             });
     },
 })
@@ -203,10 +210,12 @@ export const updateDocumentDescription = internalMutation({
     args:{
         documentId: v.id("documents"),
         description: v.string(),
+        embedding: v.array(v.float64())||[]
     },
     async handler(ctx, args){
         await ctx.db.patch(args.documentId,{
             description:args.description,
+            embedding: args.embedding
         });
     },
 });
