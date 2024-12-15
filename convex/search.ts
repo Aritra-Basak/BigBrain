@@ -3,6 +3,8 @@ import { action } from "./_generated/server";
 import { embed } from "./notes";
 import { api } from "./_generated/api";
 import { Doc } from "./_generated/dataModel";
+import { useQuery } from "convex/react";
+
 
 export const searchAction = action({
   args: {
@@ -13,55 +15,45 @@ export const searchAction = action({
     if(!userId){
         return null;
     }
-    // 1. Generate an embedding from you favorite third party API:
-    var embedding = await embed(args.search);
+    var noteResults=null;
+    try {
+      // 1. Generate an embedding from you favorite third party API:
+      var embedding = await embed(args.search);
     
     // 2. Then search for similar foods!
-    const noteResults = await ctx.vectorSearch("notes", "by_embedding", {
+    noteResults = await ctx.vectorSearch("notes", "by_embedding", {
       vector: embedding ,
       // vector: embedding as number[], -- for using Groq client
       limit: 5,
       filter: (q) => q.eq("tokenIdentifier", userId),
     });
 
-   
+    } catch (error) {
+        noteResults = useQuery(api.notes.getNotes);
+    }
 
     const records: (
-      | { type: "notes"; score: number; record: Doc<"notes"> }
-      | { type: "documents"; score: number; record: Doc<"documents"> }
+      | { type: "notes"; record: Doc<"notes"> }
+      | { type: "documents"; record: Doc<"documents"> }
     )[] = [];
 
-    await Promise.all(
-      noteResults.map(async (result) => {
-        const note = await ctx.runQuery(api.notes.getNote, {
-          noteId: result._id,
-        });
-        if (!note) {
-          return;
-        }
-        records.push({
-          record: note,
-          score: result._score,
-          type: "notes",
-        });
-      })
-    );
-    await Promise.all(
-      noteResults.map(async (result) => {
-        const note = await ctx.runQuery(api.notes.getNote, {
-          noteId: result._id,
-        });
-        if (!note) {
-          return;
-        }
-        records.push({
-          record: note,
-          score: result._score,
-          type: "notes",
-        });
-      })
-    );
+    if (noteResults) {
+      await Promise.all(
+        noteResults.map(async (result) => {
+          const note = await ctx.runQuery(api.notes.getNote, {
+            noteId: result._id,
+          });
+          if (!note) {
+           return null;
+          }
+          records.push({
+            record: note,
+            type: "notes",
+          });
+        })
+      );
+    }
 
     return records;
-  },
+  }
 });
