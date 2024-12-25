@@ -3,7 +3,6 @@
 import { LoadingButton } from "@/components/loading-button";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -43,7 +42,7 @@ export function DeleteNoteButton({ noteId }: { noteId: Id<"notes"> }) {
             Are you sure you want to delete this note?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Your note can not be recovered after it's been deleted.
+            Your note cannot be recovered after it&apos;s been deleted.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

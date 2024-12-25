@@ -37,7 +37,7 @@ export default function UploadDocumentButton() {
       <DialogHeader>
         <DialogTitle>Upload a Document.</DialogTitle>
         <DialogDescription>
-          "Upload a team document for you to search over in the futures."
+        &quot;Upload a team document for you to search over in the futures.&quot;
         </DialogDescription>
         <UploadDocumentForm onUpload={()=> {setIsOpen(false);
            toast({

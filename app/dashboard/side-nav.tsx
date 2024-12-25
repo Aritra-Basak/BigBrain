@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { ClipboardPen, Cog, FilesIcon, Search } from "lucide-react";
+import { ClipboardPen, FilesIcon, Search } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 

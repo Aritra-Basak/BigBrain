@@ -4,8 +4,6 @@ import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useParams } from 'next/navigation';
 import { Id } from '@/convex/_generated/dataModel';
-import { Button } from '@/components/ui/button';
-import { Trash } from 'lucide-react';
 import { DeleteNoteButton } from './delete-note-button';
 
 export default function NotePage() {

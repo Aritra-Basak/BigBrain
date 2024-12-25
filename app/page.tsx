@@ -1,7 +1,6 @@
 "use client";
 
 import React from 'react';
-import { Button } from "@/components/ui/button";
 import { SignInButton } from "@clerk/nextjs";
 import Image from "next/image";
 
@@ -56,7 +55,7 @@ const LandingPage = () => {
               Take Control of your Documentation
             </h1>
             <p className="dark:text-gray-100 mt-6 text-lg leading-8 text-gray-600 animate-[fadeIn_2s_ease-out]">
-              <span className="text-red-500 font-bold">Big Brain</span> acts as your team's second brain, storing all your docs
+              <span className="text-red-500 font-bold">Big Brain</span> acts as your team&apos;s second brain, storing all your docs
               and allowing easy vector search.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6 animate-[fadeIn_2.5s_ease-out]">

@@ -2,7 +2,6 @@
 
 import React from "react";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import Image from "next/image";
 import HeaderActions from "./header-actions";
 import Link from "next/link";
 import { Authenticated } from "convex/react";

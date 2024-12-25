@@ -3,7 +3,6 @@
 import { LoadingButton } from "@/components/loading-button";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -46,7 +45,7 @@ export function DeleteDocumentButton({
             Are you sure you want to delete this document?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            Your document can not be recovered after it's been deleted.
+            Your document can not be recovered after it&apos;s been deleted.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

@@ -31,7 +31,7 @@ export default function CreateNoteButton() {
       <DialogHeader>
         <DialogTitle>Upload a Note.</DialogTitle>
         <DialogDescription>
-          "Type whatever note you want to be searchable later on."
+        &quot;Type whatever note you want to be searchable later on.&quot;
         </DialogDescription>
         <CreateNoteForm onNoteCreated={()=> {setIsOpen(false);
               toast({
