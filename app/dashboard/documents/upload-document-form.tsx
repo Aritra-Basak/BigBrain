@@ -31,6 +31,7 @@ export default function UploadDocumentForm({onUpload}:{onUpload:()=>void}) {
     //useMutation is a React hook that connects to a Convex mutation function
     const createDocument = useMutation(api.document.createDocument);
     const generateUploadUrl = useMutation(api.document.generateUploadUrl);
+    const organization = useOrganization();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -51,9 +52,10 @@ export default function UploadDocumentForm({onUpload}:{onUpload:()=>void}) {
         });
         const { storageId } = await result.json();
         await createDocument({
-            title:values.title,
-            fileId : storageId as Id<"_storage">,
-        })
+          title: values.title,
+          fileId: storageId as Id<"_storage">,
+          orgId: organization.organization?.id,
+        });
         onUpload();
       }
   return (

@@ -12,7 +12,7 @@ import {
     FormLabel,
     FormMessage,
   } from "@/components/ui/form"
-import { Input } from '@/components/ui/input';
+import { useOrganization } from "@clerk/nextjs";
 import {useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import LoadingButton from '../../loading-button';
@@ -28,6 +28,7 @@ export default function CreateNoteForm({onNoteCreated}:{onNoteCreated:()=>void})
     // The API from Conver provides type-safe access to all your Convex backend functions (mutations and queries)
     //useMutation is a React hook that connects to a Convex mutation function
     const createNote = useMutation(api.notes.createNote);
+    const organization = useOrganization();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -39,6 +40,7 @@ export default function CreateNoteForm({onNoteCreated}:{onNoteCreated:()=>void})
     async function onSubmit(values:z.infer<typeof formSchema>){
         await createNote({
             text:values.text,
+            orgId: organization.organization?.id,
         })
         onNoteCreated();
       }

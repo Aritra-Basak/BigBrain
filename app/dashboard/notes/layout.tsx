@@ -13,8 +13,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useOrganization } from "@clerk/nextjs";
 
 export default function NotesLayout({ children }: { children: ReactNode }) {
-  //const organization = useOrganization();
-  const notes = useQuery(api.notes.getNotes);
+  const organization = useOrganization();
+  const notes = useQuery(api.notes.getNotes,{
+    orgId:organization.organization?.id
+  });
   const { noteId } = useParams<{ noteId: Id<"notes"> }>();
 
   return (
@@ -63,7 +65,7 @@ export default function NotesLayout({ children }: { children: ReactNode }) {
           </div>
         </div>
       )}
-
+        
       {notes && notes.length > 0 && (
         <div className="flex gap-12">
           <ul className="space-y-2 w-[300px]">

@@ -6,6 +6,7 @@ import Image from "next/image";
 import HeaderActions from './header-actions';
 import Link from 'next/link';
 import { Authenticated } from 'convex/react';
+import { OrganizationSwitcher } from '@clerk/nextjs';
 
 export default function header() {
   return (
@@ -25,8 +26,7 @@ export default function header() {
             </Link>
 
             <nav className="flex items-center gap-8">
-          
-
+            <OrganizationSwitcher />
             <Authenticated>
               <Link href="/dashboard" className="hover:text-slate-300">
                 Dashboard

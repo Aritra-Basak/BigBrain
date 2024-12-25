@@ -31,7 +31,7 @@ export default function LandingPage() {
               Take Control of your Documentation
             </h1>
             <p className="dark:text-gray-100 mt-6 text-lg leading-8 text-gray-600">
-            2<sup>nd</sup> Brain acts as your team's second brain, storing all your docs
+            <span className="text-red-500 font-bold">Big Brain</span> acts as your team's second brain, storing all your docs
               and allowing easy vector search.
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
