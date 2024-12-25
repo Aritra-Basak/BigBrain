@@ -59,7 +59,7 @@ export default function Home() {
             alt="a picture of a girl holding documents"
             className="w-32 h-32 sm:w-40 sm:h-40 md:w-[200px] md:h-[200px]"
           />
-          <h2 className="text-xl sm:text-2xl text-center">You don't have any documents</h2>
+          <h2 className="text-xl sm:text-2xl text-center">You don&apos;t have any documents</h2>
           <UploadDocumentButton />
         </div>
       )}
