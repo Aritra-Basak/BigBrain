@@ -82,6 +82,7 @@ export default function UploadDocumentForm({onUpload}:{onUpload:()=>void}) {
           control={form.control}
           name="file"
           render={({ field:{value,onChange,...fieldProps} }) => (
+            console.log(value),
             <FormItem>
               <FormLabel>File</FormLabel>
               <FormControl>
