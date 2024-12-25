@@ -39,5 +39,10 @@ export default defineSchema({
         dimensions: 1536,
         filterFields: ["tokenIdentifier"],
       })
-      .index("by_orgId", ["orgId"]),
+      .index("by_orgId", ["orgId"])
+      // .vectorIndex("by_embedding", {
+      //   vectorField: "embedding",
+      //   dimensions: 1536,
+      //   filterFields: ["tokenIdentifier", "orgId"],
+      // }),
 });
