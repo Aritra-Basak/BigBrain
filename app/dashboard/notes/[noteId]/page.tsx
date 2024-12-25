@@ -8,22 +8,33 @@ import { Button } from '@/components/ui/button';
 import { Trash } from 'lucide-react';
 import { DeleteNoteButton } from './delete-note-button';
 
-
 export default function NotePage() {
-    const {noteId}=useParams<{noteId:Id<"notes">}>();
-    const note =useQuery(api.notes.getNote,{
-        noteId:noteId,
+    const { noteId } = useParams<{ noteId: Id<"notes"> }>();
+    const note = useQuery(api.notes.getNote, {
+        noteId: noteId,
     });
- 
+
     if (!note) {
         return null;
-      }
-    
-      return (
-        <div className="relative dark:bg-slate-800 bg-slate-200 rounded p-4 w-full">
-          <DeleteNoteButton noteId={note._id} />
-    
-          <div className="pr-3 whitespace-pre-line">{note?.text}</div>
-        </div>
-      );
     }
+
+    return (
+        <div className="relative dark:bg-slate-800 bg-slate-200 rounded p-4 w-full">
+            <DeleteNoteButton noteId={note._id} />
+
+            <div
+                className="pr-3 whitespace-pre-line"
+                style={{
+                    wordWrap: "break-word",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    display: "block",
+                }}
+            >
+                {note?.text}
+            </div>
+        </div>
+    );
+}

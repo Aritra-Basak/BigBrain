@@ -70,3 +70,74 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes float-minimal-1 {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(100px, 50px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes float-minimal-2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-50px, 100px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes float-minimal-3 {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(50px, -50px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gradient-minimal {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(180deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.animate-blink {
+  animation: blink 1s ease-in-out infinite;
+}
