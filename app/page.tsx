@@ -61,9 +61,11 @@ const LandingPage = () => {
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6 animate-[fadeIn_2.5s_ease-out]">
               <SignInButton>
-                <Button className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 hover:scale-105 transition-all duration-300 hover:shadow-lg">
-                  Get started
-                </Button>
+                <button className="cssbuttons-io-button"> Get started
+                  <div className="icon">
+                    <svg height="24" width="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h24v24H0z" fill="none"></path><path d="M16.172 11l-5.364-5.364 1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2z" fill="currentColor"></path></svg>
+                  </div>
+                </button>
               </SignInButton>
             </div>
           </div>

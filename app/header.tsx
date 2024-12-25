@@ -15,20 +15,12 @@ export default function Header() {
         {/* Logo and Navigation */}
         <div className="flex items-center gap-4 sm:gap-8 flex-wrap">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 sm:gap-4 text-xl sm:text-2xl">
-            <p>Big Brain</p>
-            <Image
-              src="/brainDesign.svg"
-              width={40}
-              height={40}
-              className="rounded"
-              alt="Brain"
-            />
+          <Link href="/" className="flex items-center gap-2 sm:gap-4 text-xl sm:text-2xl cursor-pointer">
+            <p className="text-red-500 font-bold">Big Brain</p>
           </Link>
 
           {/* Navigation */}
           <nav className="flex items-center gap-4 sm:gap-8">
-            <OrganizationSwitcher />
             <Authenticated>
               <Link
                 href="/dashboard"
@@ -44,6 +36,7 @@ export default function Header() {
         <div className="flex items-center gap-2 sm:gap-4 mt-4 sm:mt-0">
           <ModeToggle />
           <HeaderActions />
+          <OrganizationSwitcher />
         </div>
       </div>
     </div>
