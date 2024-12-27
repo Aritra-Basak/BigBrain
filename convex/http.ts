@@ -42,7 +42,7 @@ http.route({
         status: 200,
       });
     } catch (err) {
-      return new Response("Webhook Error", {
+      return new Response("Webhook Error -- " + String(err), {
         status: 400,
       });
     }

@@ -6,12 +6,13 @@ import { internal } from "./_generated/api";
 import { hasOrgAccess } from "./document";
 import { Doc, Id } from "./_generated/dataModel";
 
+
 const client = new Groq({
-    apiKey: process.env.GROQ_API_KEY
+  apiKey: process.env.GROQ_API_KEY!,
   });
 
 const openai = new OpenAI({
-    apiKey: process.env.OPEN_AI_API_KEY,
+    apiKey: process.env.OPEN_AI_API_KEY!
   });
 
 export async function embed(text:string){

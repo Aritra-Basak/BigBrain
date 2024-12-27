@@ -12,7 +12,7 @@ import { embed } from "./notes";
 
 // Groq API KEY
 const client = new Groq({
-    apiKey: process.env.GROQ_API_KEY
+  apiKey: process.env.GROQ_API_KEY!,
   });
 
   // A utility function to check whete the logged in user has access to the document or not.
@@ -69,9 +69,10 @@ export const createDocument = mutation({
         throw new ConvexError("Not authenticated");
       }
       if(args.orgId){
+        console.log(args.orgId);
         const isMember = await hasOrgAccess(ctx,args.orgId);
         if(!isMember){
-            throw new ConvexError("You don;t have access to this Organization.")
+            throw new ConvexError("You don't have access to this Organization.")
         }
       }
   
@@ -80,7 +81,7 @@ export const createDocument = mutation({
       if (args.orgId) {
         const isMember = await hasOrgAccess(ctx, args.orgId);
         if (!isMember) {
-          throw new ConvexError("You do not have access to this organization");
+          throw new ConvexError("You don't have access to this organization");
         }
   
         documentId = await ctx.db.insert("documents", {
