@@ -18,6 +18,11 @@ export default defineSchema({
     fileId: v.id("_storage")}) //"_storage" defines the ID of Storage.
     .index('by_tokenIdentifier',['tokenIdentifier'])
     //The above table will indexed by the token-identifier from the logged in user.
+    .vectorIndex("by_embedding", {
+      vectorField: "embedding",
+      dimensions: 1536,
+      filterFields: ["tokenIdentifier", "orgId"],
+    })
     .index('by_orgId',['orgId']),
 
   chats: defineTable({
@@ -34,10 +39,11 @@ export default defineSchema({
       orgId: v.optional(v.string()),
       embedding: v.optional(v.array(v.float64())),
       tokenIdentifier: v.optional(v.string()),})
-      .index('by_tokenIdentifier',['tokenIdentifier']).vectorIndex("by_embedding", {
+      .index('by_tokenIdentifier',['tokenIdentifier'])
+      .vectorIndex("by_embedding", {
         vectorField: "embedding",
         dimensions: 1536,
-        filterFields: ["tokenIdentifier"],
+        filterFields: ["tokenIdentifier", "orgId"],
       })
       .index("by_orgId", ["orgId"])
       // .vectorIndex("by_embedding", {

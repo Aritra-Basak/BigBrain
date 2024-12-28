@@ -292,7 +292,7 @@ async handler(ctx, args) {
 },
 });
 
-
+//Function to check whether the current user has access to respective Org.
 export const hasOrgAccess = async (
     ctx: MutationCtx | QueryCtx,
     orgId: string

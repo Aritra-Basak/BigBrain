@@ -5,7 +5,9 @@ import "./globals.css";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import Header from "./header";
 import { Toaster } from "@/components/ui/toaster"
+import { Suspense } from "react";
 
+import { Loader } from "@/components/loader";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,9 +37,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ConvexClientProvider>
-          <Header/>
-          {children}
-          <Toaster/>
+          <Header />
+          <Suspense fallback={<Loader />}>
+            {children}
+          </Suspense>
+          <Toaster />
         </ConvexClientProvider>      
       </body>
     </html>

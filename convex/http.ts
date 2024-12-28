@@ -13,13 +13,14 @@ http.route({
     const headerPayload = request.headers;
 
     try {
+      //The result stores the payload after the webhook secret key is verified against the stored key.
       const result: WebhookEvent = await ctx.runAction(internal.clerk.fulfill, {
-        payload: payloadString,
         headers: {
           "svix-id": headerPayload.get("svix-id")!,
           "svix-timestamp": headerPayload.get("svix-timestamp")!,
           "svix-signature": headerPayload.get("svix-signature")!,
         },
+        payload: payloadString
       });
 
       switch (result.type) {
