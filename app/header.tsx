@@ -7,6 +7,7 @@ import Link from "next/link";
 import { Authenticated } from "convex/react";
 import { OrganizationSwitcher } from "@clerk/nextjs";
 import { Menu, X } from "lucide-react";
+import Image from "next/image";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,20 +23,16 @@ export default function Header() {
             <div className="flex items-center gap-8">
               {/* Logo */}
               <Link href="/" className="flex items-center gap-4 text-2xl">
-                <p className="text-red-500 font-bold">Big Brain</p>
+                <Image
+                  src="/logo.png"
+                  width="50"
+                  height="50"
+                  alt="Doc Icon"
+                  className="w-12 h-12 sm:w-16 sm:h-16 md:w-[50px] md:h-[50px] rounded-xl"
+                />
+                <p className="text-red-500 font-bold">Big Brain</p>                
               </Link>
 
-              {/* Navigation */}
-              <nav className="flex items-center gap-8">
-                <Authenticated>
-                  <Link
-                    href="/dashboard"
-                    className="text-base transition-colors hover:text-red-500 dark:hover:text-red-400"
-                  >
-                    Dashboard
-                  </Link>
-                </Authenticated>
-              </nav>
             </div>
 
             {/* Actions */}

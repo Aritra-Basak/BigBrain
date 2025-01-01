@@ -136,7 +136,7 @@ const LandingPage = () => {
                 src="/logo.png"
                 width="200"
                 height="200"
-                alt="a woman holding a document"
+                alt="logo of bigBrain"
                 className="mx-auto rounded-2xl mb-4 hover:scale-105 transition-transform duration-300"
               />
             </div>
