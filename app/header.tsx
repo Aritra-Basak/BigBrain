@@ -18,25 +18,36 @@ export default function Header() {
       <div className="relative backdrop-blur-md bg-white/30 dark:bg-slate-900/30 shadow-sm border-b border-slate-200 dark:border-slate-800">
         <div className="container mx-auto px-4">
           {/* Desktop Layout */}
-          <div className="hidden md:flex items-center justify-between h-16">
+          <div className="hidden md:flex items-center justify-between h-14">
             {/* Logo and Navigation */}
-            <div className="flex items-center gap-8">
-              {/* Logo */}
-              <Link href="/" className="flex items-center gap-4 text-2xl">
+            <div className="flex items-center gap-6">
+              {/* Logo - Simplified */}
+              <Link href="/" className="flex items-center gap-2">
                 <Image
                   src="/logo.png"
-                  width="50"
-                  height="50"
+                  width="40"
+                  height="40"
                   alt="Doc Icon"
-                  className="w-12 h-12 sm:w-16 sm:h-16 md:w-[50px] md:h-[50px] rounded-xl"
+                  className="w-10 h-10 rounded-lg"
                 />
-                <p className="text-red-500 font-bold">Big Brain</p>                
+                <span className="text-lg font-semibold text-red-500">Big Brain</span>
               </Link>
 
+              {/* Navigation - Reduced size */}
+              <nav className="flex items-center gap-6">
+                <Authenticated>
+                  <Link
+                    href="/dashboard"
+                    className="text-sm font-medium transition-colors hover:text-red-500 dark:hover:text-red-400"
+                  >
+                    Dashboard
+                  </Link>
+                </Authenticated>
+              </nav>
             </div>
 
-            {/* Actions */}
-            <div className="flex items-center gap-4">
+            {/* Actions - Compact */}
+            <div className="flex items-center gap-3">
               <ModeToggle />
               <HeaderActions />
               <OrganizationSwitcher />

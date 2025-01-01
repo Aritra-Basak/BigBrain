@@ -125,7 +125,7 @@ const Particle = () => {
 
 const LandingPage = () => {
   return (
-    <div className="bg-slate-200 dark:bg-slate-950 h-screen overflow-hidden relative">
+    <div className="bg-slate-200 dark:bg-slate-950 h-[100%] overflow-hidden relative">
       <Particle />
       
       <div className="relative isolate px-6 pt-14 lg:px-8">
