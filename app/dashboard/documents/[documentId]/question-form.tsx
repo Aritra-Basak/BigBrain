@@ -50,6 +50,7 @@ export function QuestionForm({ documentId }: { documentId: Id<"documents"> }) {
               <FormControl>
                 <Input
                   placeholder="Ask any question over this document"
+                  autoComplete="off"
                   {...field}
                 />
               </FormControl>
